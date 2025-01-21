@@ -30,7 +30,7 @@ export interface JournalEntry {
 app.get("/journal_entries/:id", async (req: Request, res: Response) => {
   try {
     const { rows: journal_entries } =
-      await client.sql`SELECT * FROM journal_entry WHERE user_id = ${req.params.id}`;
+      await client.sql`SELECT * FROM journal_entry WHERE user_id = ${req.params.id} ORDER BY created_at DESC`;
     res.status(200).json(journal_entries);
   } catch (error) {
     console.error(error);
