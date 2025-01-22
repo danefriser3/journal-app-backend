@@ -74,21 +74,16 @@ app.post(
     }
   }
 );
-app.post(
-  "/users",
-  urlencodedParser,
-  async (req: Request, res: Response) => {
-    const { name, email, password }  =
-      req.body;
-    try {
-      await client.sql`INSERT INTO users (name, email, password) VALUES (${name}, ${email}, ${password})`;
-      res.status(201).send("User added successfully");
-    } catch (error) {
-      console.error(error);
-      res.status(500).send("Error adding user");
-    }
+app.put("/users", async (req: Request, res: Response) => {
+  const { name, email, password } = req.body;
+  try {
+    await client.sql`INSERT INTO users (name, email, password) VALUES (${name}, ${email}, ${password})`;
+    res.status(201).send("User added successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error adding user");
   }
-);
+});
 app.listen(3000, () => console.log("Server ready on port 3000."));
 
 module.exports = app;
