@@ -77,6 +77,12 @@ app.post(
 app.put("/users", async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
   try {
+    const { rowCount } =
+      await client.sql`SELECT * FROM users WHERE email = ${email}`;
+
+    if (rowCount > 0) {
+      return res.status(400).send("User already exists");
+    }
     await client.sql`INSERT INTO users (name, email, password) VALUES (${name}, ${email}, ${password})`;
     res.status(201).send("User added successfully");
   } catch (error) {
